@@ -11,7 +11,7 @@ model = YOLO("yolov8n.pt")  # Modèle léger, vous pouvez utiliser un modèle pl
 CAPSULE_COLORS = {
     "Eau Vive": {"lower": np.array([0, 100, 100]), "upper": np.array([10, 255, 255])},  # Rouge
     "Cristaline": {"lower": np.array([90, 50, 50]), "upper": np.array([130, 255, 255])},  # Bleu
-    "Fanta": {"lower": np.array([0, 100, 45]), "upper": np.array([225, 250, 255])}  # Orange
+    "Fanta": {"lower": np.array([10, 100, 100]), "upper": np.array([25, 255, 255])}  # Orange
 }
 
 BOTTLE_CLASS_ID = 39  # Classe "bottle" dans le dataset COCO
@@ -42,7 +42,7 @@ def detecter_bouteilles(image_path, iou_threshold=0.6):
                 class_ids.append(class_id)
 
     # Appliquer la suppression non maximale (NMS)
-    indices = cv2.dnn.NMSBoxes(boxes, scores, score_threshold=0.1, nms_threshold=iou_threshold)
+    indices = cv2.dnn.NMSBoxes(boxes, scores, score_threshold=0.3, nms_threshold=iou_threshold)
 
     # Stocker les résultats de détection des bouteilles
     bottles_count = defaultdict(int)
@@ -106,6 +106,6 @@ def identifier_capsule(cap_roi):
 
 # Exemple d'utilisation
 if __name__ == "__main__":
-    chemin_image = "images.png"  # Remplacez par votre image
+    chemin_image = "salon-emploi-STAR.jpg"  # Remplacez par votre image
     resultats = detecter_bouteilles(chemin_image)
     print("Détails des bouteilles détectées :", resultats)
